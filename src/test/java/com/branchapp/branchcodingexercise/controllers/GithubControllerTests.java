@@ -23,8 +23,6 @@ public class GithubControllerTests {
     @Autowired
     private WebTestClient webClient;
 
-    private final ErrorResponse noUserResponse = ErrorResponse.builder().errorMessage("404 Not Found from GET https://api.github.com/users/%22").build();
-
     private final GithubUser expectedFieldMapping = GithubUser.builder()
             .userName("jeff-gastontech")
             .avatar("https://avatars.githubusercontent.com/u/105401793?v=4")
@@ -35,6 +33,7 @@ public class GithubControllerTests {
             .createdAt(Instant.parse("2022-05-12T01:31:51Z"))
             .repos(List.of(
                     GithubUserRepo.builder().name("aws-step-functions-glue").url("https://github.com/jeff-gastontech/aws-step-functions-glue").build(),
+                    GithubUserRepo.builder().name("branch-coding-exercise").url("https://github.com/jeff-gastontech/branch-coding-exercise").build(),
                     GithubUserRepo.builder().name("EngineeringAsyncChallenge").url("https://github.com/jeff-gastontech/EngineeringAsyncChallenge").build(),
                     GithubUserRepo.builder().name("four-card").url("https://github.com/jeff-gastontech/four-card").build(),
                     GithubUserRepo.builder().name("media-player-example").url("https://github.com/jeff-gastontech/media-player-example").build(),
@@ -62,12 +61,14 @@ public class GithubControllerTests {
                 .isEqualTo(expectedFieldMapping);
     }
 
+    /**
+     * Can be flakey if you check for repo or just user due to the calls being parallel
+     */
     @Test
     void testGetUserByUsernameExpectErrorFailure() {
-        webClient.get().uri("/user/{username}", "\"")
+        webClient.get().uri("/user/{username}", "jeff-gastontech123")
                 .exchange()
                 .expectStatus().is4xxClientError()
-                .expectBody(ErrorResponse.class)
-                .isEqualTo(noUserResponse);
+                .expectBody(ErrorResponse.class);
     }
 }
