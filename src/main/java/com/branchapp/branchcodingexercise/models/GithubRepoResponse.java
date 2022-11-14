@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Class to model response directly from Github
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

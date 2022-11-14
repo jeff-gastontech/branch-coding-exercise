@@ -29,4 +29,7 @@ reviewing what all would go into it I decided to use WireMock instead. It is a b
 still works well for the unit tests. It's the extensibility of being able to mock any request/response that drew me to
 it.
 
-"# branch-coding-exercise" 
+### Architecture
+
+I decided to go with a standard N tier architecture for this. It's pretty straight forward. I could have put the two
+fetch methods into a "repository" class, but I thought that might overcomplicate it.

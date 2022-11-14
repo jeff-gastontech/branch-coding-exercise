@@ -13,6 +13,9 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Handles fetching and remapping Github user and repos to the response object.
+ */
 @Service
 public class GithubRestService {
     private final WebClient client;
@@ -22,6 +25,7 @@ public class GithubRestService {
     }
 
     public Mono<GithubUser> findGithubUserInfoAndRepos(String username) {
+        // Fetches both in parallel to combine into response
         return Mono.zip(getGithubUser(username),getGithubRepos(username)).flatMap(data -> {
             GithubResponse githubResponse = data.getT1();
             List<GithubRepoResponse> githubRepos = data.getT2();
@@ -40,10 +44,20 @@ public class GithubRestService {
         });
     }
 
+    /**
+     * Fetches Github user
+     * @param username
+     * @return
+     */
     private Mono<GithubResponse> getGithubUser(String username) {
         return client.get().uri(uriBuilder -> uriBuilder.pathSegment("users", username).build()).retrieve().bodyToMono(GithubResponse.class);
     }
 
+    /**
+     * Fetches Github repos
+     * @param username
+     * @return
+     */
     private Mono<List<GithubRepoResponse>> getGithubRepos(String username) {
         return client.get()
                                 .uri(uriBuilder -> uriBuilder.pathSegment("users",username,"repos")

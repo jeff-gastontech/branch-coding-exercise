@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
+/**
+ * Class to model an exceptions that need to be returned
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

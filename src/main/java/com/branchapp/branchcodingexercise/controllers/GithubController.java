@@ -22,11 +22,27 @@ public class GithubController {
         this.githubRestService = githubRestService;
     }
 
+    /**
+     * Method to find Github user and repos belonging to them and return them as a remapped user object
+     *
+     * @param username
+     * @return
+     */
     @GetMapping("/user/{username}")
-    public Mono<GithubUser> findUserAndRepos(@PathVariable @NotBlank @Pattern(regexp = "^[a-zA-Z0-9]$") String username) {
+    public Mono<GithubUser> findUserAndRepos(@PathVariable @NotBlank @Pattern(regexp = "^[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}$",
+            message = "Github username may only contain alphanumeric characters or hyphens. " +
+                    "Github username cannot have multiple consecutive hyphens. " +
+                    "Github username cannot begin or end with a hyphen. " +
+                    "Maximum is 39 characters.") String username) {
         return githubRestService.findGithubUserInfoAndRepos(username);
     }
 
+    /**
+     * Exception handler for handling any exceptions that may occur. Could be narrowed down to only handle webClient exceptions though.
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> serverExceptionHandler(Exception ex) {
         ex.printStackTrace();

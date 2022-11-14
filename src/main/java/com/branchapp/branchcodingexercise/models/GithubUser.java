@@ -8,6 +8,9 @@ import lombok.*;
 import java.time.Instant;
 import java.util.*;
 
+/**
+ * Data response class
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

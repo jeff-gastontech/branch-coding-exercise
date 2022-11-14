@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
+/**
+ * Class to model response directly from Github
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
